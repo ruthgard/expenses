@@ -1,0 +1,9 @@
+server.port: 8082
+spring:
+  profiles.active: prod
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    sufix: .html
+  application.name: Expense tool

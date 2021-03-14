@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header :: common_header(~{::title})">
+    <title>Expense tool - Standings</title>
+</head>
+<body>
+<script>
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<!-- Welcome Section -->
+<div th:replace="header :: common_navbar('standings','Standings','fas fa-calculator','See the standings below')">
+    Navbar
+</div>
+<div class="container-fluid h-100 justify-content-center d-flex">
+    <div class="card col-sm-6">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="standings-list" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#new" role="tab" aria-controls="new" aria-selected="true">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#data" role="tab" aria-controls="data" aria-selected="true">All</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"  href="#overview" role="tab" aria-controls="overview" aria-selected="false">Overview</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content mt-3">
+            <div class="tab-pane active" id="new" role="tabpanel" aria-labelledby="new-tab">
+
+                <form id="expenseForm" action="#" method="post" th:action="@{/registerExpense}" th:object="${exp}" onsubmit="return validate()" >
+                    <ul th:if="${#fields.hasErrors('*')}">
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <input id="idInput" th:field="*{id}" type="hidden">
+                        <label for="nameInput">Expense name</label>
+                        <input aria-describedby="nameHelp" autofocus
+                               class="form-control needs-validation" id="nameInput"
+                               required th:field="*{name}" type="text">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseAmount">Enter the expense amount</label>
+                        <input class="form-control needs-validation" id="expenseAmount"
+                               required
+                               th:field="*{amount}" type="tel">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDate">Date the expense was placed</label>
+                        <input class="form-control needs-validation" id="expenseDate"
+                               required th:field="*{stringDate}" type="date">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <input class="form-control btn btn-primary stretched-link mt-auto" type="submit"
+                           value="Save expense">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                Payees
+                                <div class="" th:each=" pwallet : ${allWallets}">
+                                    <div class="custom-control custom-toggle my-2">
+                                        <input class="custom-control-input"
+                                               name="payees"
+                                               th:checked="${payees.getEnabled(pwallet.id)}"
+                                               th:id="'payeer-' + ${pwallet.name}"
+                                               th:value="${pwallet.id}"
+                                               type="checkbox">
+                                        <label class="custom-control-label"
+                                               th:for="'payeer-' + ${pwallet.name}">
+                                            <i th:class="${pwallet.icon}"></i>&nbsp;<span th:text="${pwallet.name}">myName</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                Buyers
+                                <div class="" th:each=" bwallet : ${allWallets}">
+                                    <div class="custom-control custom-toggle my-2">
+                                        <input class="custom-control-input"
+                                               name="buyees"
+                                               th:checked="${buyers.getEnabled(bwallet.id)}"
+                                               th:id="'taker-' + ${bwallet.name}"
+                                               th:value="${bwallet.id}"
+                                               type="checkbox">
+                                        <label class="custom-control-label"
+                                               th:for="'taker-' + ${bwallet.name}">
+                                            <i th:class="${bwallet.icon}"></i>&nbsp;<span th:text="${bwallet.name}">myName</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDescription">Describe your expense further (optional)</label>
+                        <textarea class="form-control" id="expenseDescription" rows="3"
+                                  th:field="*{description}"></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="data" role="tabpanel" aria-labelledby="data-tab">
+                <h5 class="card-title">Current expenses</h5>
+                <ul class="list-group">
+                    <li th:each="e: ${expenses}" th:href="@{/editExpense/{id}(id=${e.id})}" th:onclick="'window.location.href = \'' + @{/editExpense/{id}(id=${e.id})} + '\''" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div class="flex-column">
+                            <span th:text="${e.name}">Don Quixote</span>
+                            <span><small class="text-nowrap" th:text="${e.stringDate}"></small></span>
+                            <div class="small" th:text="${e.description}"></div>
+                            <div class="d-flex">
+                                <span><a class="badge badge-danger" data-confirm-title="Delete Expense?"
+                                         th:data-confirm-content="'Are you sure you want to delete ' + ${e.name} + '?'"
+                                         th:href="@{/deleteExpense/{id}(id=${e.id})}"
+                                         th:id="'deleteLink'+${e.id}"><i class="fas fa-trash"></i> Delete</a>
+                                </span>
+                                <script th:inline="javascript">
+                                        /*<![CDATA[*/  $("#deleteLink[[${e.id}]]").popConfirm(); /*]]>*/
+                                </script>
+                                <div class="badge badge-success badge-pill"><span th:each="p: ${e.payers}"><i th:class="${p.icon}" data-toggle="tooltip" data-placement="top" th:title="'Payer ' + ${p.name}"></i>&nbsp;</span></div>
+                                <div class="badge badge-warning badge-pill"><span th:each="b: ${e.byers}"><i th:class="${b.icon}" data-toggle="tooltip" data-placement="top" th:title="'Buyer ' + ${b.name}"></i>&nbsp;</span></div>
+                            </div>
+                        </div>
+                        <div class="flex-column">
+                            <big class="text-nowrap"><i class="fas fa-coins"></i>&nbsp;<span th:text="${e.amount}"></span></big>
+                        </div>
+                    </li>
+                </ul>
+                <nav aria-label="Expense navigation">
+                    <ul class="pagination pagination-lg">
+                        <li th:class="'page-item ' + ${currentPage == pageNumber ? 'active' : ''}"
+                            th:each="pageNumber : ${pageNumbers}">
+                            <a class="page-link" th:href="@{/standings(page=${pageNumber}, size=30)}"
+                               th:text="${pageNumber}">##</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="tab-pane" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                <h5 class="card-title">Overview</h5>
+                <p class="card-text" th:each="element: ${standings}">
+                    <i th:class="${element.key.icon}"></i> <span th:text="${element.key.name}"></span>
+                    <span th:class="'badge badge-' + ( (${element.value} >= 0)? 'success':'danger')"><span th:text="${#numbers.formatDecimal(element.value, 0, 'COMMA', 2, 'POINT')}">NaN</span> SEK</span>
+                </p>
+                <p class="card-text" sec:authorize="hasAuthority('ADMIN')">
+                    <form id="settingsForm" action="#" method="post" th:action="@{/updateSettings}" th:object="${settings}">
+                        <ul th:if="${#fields.hasErrors('*')}">
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <input id="idInputDate" th:field="*{id}" type="hidden">
+                            <label for="startDate">Counting from date</label>
+                            <input class="form-control needs-validation" id="startDate"
+                                   required th:field="*{stringDate}" type="date">
+                            <input class="form-control btn btn-primary stretched-link mt-auto" type="submit" value="Update date"/>
+                        </div>
+                    </form>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ // do not engage datepicker
+} else {
+$('#startDate').datepicker({
+      autoclose: true,
+      todayHighlight: true,
+      language: 'sv-SE',
+      weekStart: 1,
+      format: 'yyyy-mm-dd'
+});
+}
+$('#standings-list a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>
+</body>
+
+</html>

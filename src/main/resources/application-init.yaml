@@ -1,0 +1,12 @@
+spring:
+  profile: init
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:/opt/db/proddb/test;USER=sa;PASSWORD=password
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create
+      mdl-auto: none
+  h2.console.enabled: false

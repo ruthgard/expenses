@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header :: common_header(~{::title})">
+    <title>Expense tool - Settings</title>
+</head>
+<body>
+<!-- Welcome Section -->
+<div th:replace="header :: common_navbar('settings','Settings','fas fa-cogs','See the settings below')">
+    Navbar
+</div>
+
+
+<div class="container-fluid h-100">
+
+    <div class="row">
+            <div class="container">
+                <div class="row justify-content-center">
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                        <div class="card text-center w-100 pt-3">
+                            <div class="card-body d-flex flex-column" th:switch="${allUsers}">
+                                <h5 class="card-title" th:case="null">No users yet!</h5>
+                                <div th:case="*">
+                                    <h5 class="card-title">
+                                        Current users <i class="fas fa-user"></i>
+                                    </h5>
+                                    <div class="card-body text-left table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">E-mail</th>
+                                            <th scope="col">Action</th>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="u: ${allUsers}"
+                                                th:onclick="'window.location.href = \'' + @{/editUser/{id}(id=${u.id})} + '\''">
+                                                <td th:text="${u.name}"></td>
+                                                <td th:text="${u.email}"></td>
+                                                <td><a class="badge badge-danger" data-confirm-title="Delete User?"
+                                                       th:data-confirm-content="'Are you sure you want to delete ' + ${u.name} + '?'"
+                                                       th:href="@{/deleteUser/{id}(id=${u.id})}"
+                                                       th:id="'deleteLink'+${u.id}"><i
+                                                        class="fas fa-trash"></i> Delete</a></td>
+                                                <script th:inline="javascript">
+                                            /*<![CDATA[*/  $("#deleteLink[[${u.id}]]").popConfirm(); /*]]>*/
+                                                </script>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-left mb-4 ml-4">
+                                <a class="btn btn-info" role="button" th:href="@{/user}"><i class="fas fa-user"></i>
+                                    Create new
+                                    user</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                        <div class="card text-center w-100 pt-3">
+                            <div class="card-body d-flex flex-column" th:switch="${allWallets}">
+                                <h5 class="card-title" th:case="null">No wallets yet!</h5>
+                                <div th:case="*">
+                                    <h5 class="card-title">
+                                        Current wallets <i class="fas fa-wallet"></i>
+                                    </h5>
+                                    <div class="card-body text-left table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Users</th>
+                                            <th scope="col">Action</th>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="w: ${allWallets}"
+                                                th:onclick="'window.location.href = \'' + @{/editWallet/{id}(id=${w.id})} + '\''">
+                                                <td><i th:class="${w.icon}"></i>&nbsp;<span th:text="${w.name}"></span></td>
+                                                <td><span th:each="us: ${w.users}"><i class="fas fa-user"></i> <span
+                                                        th:text="${us.name}"></span> </span></td>
+                                                <td><a class="badge badge-danger" data-confirm-title="Delete Wallet?"
+                                                       th:data-confirm-content="'Are you sure you want to delete ' + ${w.name} + '?'"
+                                                       th:href="@{/deleteWallet/{id}(id=${w.id})}"
+                                                       th:id="'deleteLink'+${w.id}"><i
+                                                        class="fas fa-trash"></i> Delete</a></td>
+                                                <script th:inline="javascript">
+                                            /*<![CDATA[*/  $("#deleteLink[[${w.id}]]").popConfirm(); /*]]>*/
+                                                </script>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-left mb-4 ml-4">
+                                <a class="btn btn-info" role="button" th:href="@{/wallet}"><i class="fas fa-wallet"></i>
+                                    Create new
+                                    wallet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

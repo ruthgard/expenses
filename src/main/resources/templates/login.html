@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header :: common_header(~{::title})">
+    <title>Expense tool - Log in</title>
+</head>
+<body>
+<!-- Welcome Section -->
+<div th:replace="header :: common_navbar('login','Log in','fas fa-user','')">
+    Navbar
+</div>
+
+
+<div class="container-fluid h-100">
+
+    <div class="row">
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                    <div class="card text-center w-100 pt-3">
+                            <div class="card-body text-left">
+                                <p th:if="${loginError}" class="error">Wrong user or password</p>
+                                <form th:action="@{/perform_login}" method="post">
+                                    <label for="username">Username</label>:
+                                    <input type="text" class="form-control needs-validation" id="username" name="username" autofocus="autofocus" /> <br />
+                                    <label for="password">Password</label>:
+                                    <input type="password" class="form-control needs-validation" id="password" name="password" /> <br />
+                                    <input type="submit" class="form-control btn btn-info stretched-link mt-auto" value="Log in" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

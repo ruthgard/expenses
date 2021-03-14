@@ -1,0 +1,2 @@
+INSERT INTO USER (id,name,email,admin,password) VALUES (1,'Admin','admin@ruthgard.org',true,'$2a$10$gyqf1Duoe5hEviJbW9fVPue.CekGAZvq008nxtiTfiw.5x6t8LD2q');
+INSERT INTO SETTINGS(id,date) VALUES (2,'2020-11-21 00:00:00');

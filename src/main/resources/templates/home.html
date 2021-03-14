@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="header :: common_header(~{::title})">
+    <title>Expense tool</title>
+</head>
+<body>
+<!-- Welcome Section -->
+<div th:replace="header :: common_navbar('','🦄 Expense tool','','Keep track of your and your friends expenses and share costs in a fair manner.')">
+    Navbar
+</div>
+
+
+<div class="container-fluid h-100">
+
+    <div class="row">
+
+        <div class="container">
+            <div class="row justify-content-center">
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                    <div class="card text-center w-100 pt-3">
+                        <div class="card-img-top mx-auto">
+                            <span class="fas fa-money-bill-wave text-primary fa-4x"></span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                Expenses
+                            </h5>
+
+                            <span>Register and manage expenses</span>
+                        </div>
+                        <a class="btn btn-primary stretched-link mt-auto"
+                           th:href="@{/expense}">To expenses</a>
+                    </div>
+
+                </div>
+                <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                    <div class="card text-center w-100 pt-3">
+                        <div class="card-img-top mx-auto">
+                            <span class="fas fa-calculator text-secondary fa-4x"></span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Standings</h5>
+                            <span>Calculate standings and manage calculated periods</span>
+                        </div>
+                        <a class="btn btn-secondary stretched-link mt-auto"
+                           th:href="@{/standings}">To standings</a>
+                    </div>
+
+                </div>
+                <div class="col-sm-6 d-flex align-items-stretch mb-4">
+                    <div class="card text-center w-100 pt-3">
+                        <div class="card-img-top mx-auto">
+                            <span class="fas fa-cogs text-info fa-4x"></span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                Settings
+                            </h5>
+
+                            <span>Manage expense tool settings</span>
+                        </div>
+                        <a class="btn btn-info stretched-link mt-auto"
+                           th:href="@{/settings}">To settings</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<footer class="blockquote-footer float-right mx-4">
+</footer>
+
+</body>
+</html>

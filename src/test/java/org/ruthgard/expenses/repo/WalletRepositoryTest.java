@@ -33,16 +33,16 @@ class WalletRepositoryTest {
         userRepository.save(gustav);
 
         User maria = new User();
-        maria.setName("Maria Ruthgård");
-        maria.setEmail("maria@ruthgard.org");
+        maria.setName("Maria Andersson");
+        maria.setEmail("maria@andersson.org");
         maria.setPassword("ölkölk");
         maria.setAdmin(false);
 
         userRepository.save(maria);
 
         User thomas = new User();
-        thomas.setName("Thomas Padron McCarthy");
-        thomas.setEmail("thomas.padron.mccarthy@oru.se");
+        thomas.setName("Teste testsson");
+        thomas.setEmail("test@testsson.se");
         thomas.setPassword("zxczxc");
         thomas.setAdmin(false);
 
@@ -61,7 +61,7 @@ class WalletRepositoryTest {
 
 
         Wallet padron = new Wallet();
-        padron.setName("Padrone");
+        padron.setName("Paddes");
 
         ArrayList padronList = new ArrayList<User>();
         padronList.add(thomas);
@@ -74,14 +74,14 @@ class WalletRepositoryTest {
         List<Wallet> ruthgard = walletRepository.findByName("Ruthgårds");
         assertTrue(ruthgard.size() > 0, "Fler än 0 Ruthgårds");
 
-        List<Wallet> padron = walletRepository.findByName("Padrone");
-        assertTrue(padron.size() > 0, "Fler än 0 Padrones");
+        List<Wallet> padron = walletRepository.findByName("Paddes");
+        assertTrue(padron.size() > 0, "Fler än 0 Paddes");
 
         Wallet r = ruthgard.get(0);
         Wallet p = padron.get(0);
 
         assertTrue(r.getUsers().size() == 2, "Två användare i Ruthgårds");
-        assertTrue(p.getUsers().size() == 1, "En användare i Padrone");
+        assertTrue(p.getUsers().size() == 1, "En användare i Paddes");
 
     }
 }
